@@ -6,21 +6,21 @@ import { ToastContainer } from 'react-toastify';
 import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import Home from '../pages/Home';
+// import Cart from '../pages/Cart';
 
 const App = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if the user has a token and is trying to access the login/signup page
     const token = localStorage.getItem("authToken");
 
-    if (token) {
-      // If token exists, redirect directly to Home
-      navigate("/");
-    } else {
-      // If there's no token and trying to access the Home page, redirect to login
-      if (window.location.pathname !== "/login" && window.location.pathname !== "/signup") {
-        navigate("/login");
+    // Redirect based on authentication and current path
+    if (!token) {
+      if (
+        window.location.pathname !== "/login" &&
+        window.location.pathname !== "/signup"
+      ) {
+        navigate("/login"); // Redirect unauthenticated users to login
       }
     }
   }, [navigate]);
@@ -32,8 +32,9 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
-        {/* Protected route - home page */}
+        {/* Protected routes */}
         <Route path="/" element={<Home />} />
+        {/* <Route path="/cart" element={<Cart />} /> */}
       </Routes>
       <ToastContainer />
     </div>
